@@ -5,53 +5,46 @@ window.addEventListener("DOMContentLoaded", () => {
   let input = document.querySelector("#input")
 
   //start
-  addCheckedEventForOld()
-  addDeleteEventForOld()
-  addDragEventForOld()
-  addDragenterEventForOld()
+  addEvents()
   addCreateTodoEvent()
 
 
-  //todo add checked
-  function addCheckedEventForOld() {
+  function addEvents() {
     todos.forEach(function(todo) {
       addCheckedEvent(todo)
+      addDeleteEvent(todo)
+      addDraggable(todo)
+      addDragstartEvent(todo)
+      addDropEvent(todo)
     })
   }
 
-  // delete todo
-  function addDeleteEventForOld() {
-    let deleteBtns = document.querySelectorAll("ul li .close")
-    deleteBtns.forEach(function (btn) {
-      addDeleteEvent(btn)
+
+  //Drag
+  function addDraggable(todo) {
+    todo.setAttribute("draggable", true)
+  }
+
+
+  function addDragstartEvent(todo) {
+    todo.addEventListener("dragstart", function(event) {
+      event.target.className = "target"
+      event.dataTransfer.setData("text/plain", event.target.className)
     })
   }
 
-  function addDragEventForOld() {
-    todos.forEach(function(todo) {
-      todo.setAttribute("draggable", true)
-    })
-  }
-  function addDragEventForOld() {
-    todos.forEach(function(todo) {
-      todo.addEventListener("drag", () => {
-        
-      })
+  function addDropEvent(todo) {
+    todo.addEventListener("drag", function(event) {
+      let cName = event.dataTransfer.getData("text/plain")
+      console.log("drag")
+      console.log(cName)
+      // console.log("todo: " + todo.id)
+
+      // todo.insertAdjacentElement("afterend", target)
     })
   }
 
-  function addDragenterEventForOld() {
-    todos.forEach(function(todo){
-      todo.addEventListener("dragenter", () => {
-        console.log("dragenter")
-        target = event.target
-        console.log("target: " + target.id)
-        console.log("todo: " + todo.id)
 
-        todo.insertAdjacentElement("afterend", target)
-      })
-    })
-  }
 
   // add todo 
   function addCreateTodoEvent() {
@@ -60,7 +53,7 @@ window.addEventListener("DOMContentLoaded", () => {
       newTodo = createNewTodo()
       addCheckedEvent(newTodo)
       deleteBtn = newTodo.querySelector(".close")
-      addDeleteEvent(deleteBtn)
+      addDeleteEvent(newTodo)
       todoUl.appendChild(newTodo)
     })
   }
@@ -86,7 +79,8 @@ window.addEventListener("DOMContentLoaded", () => {
     })
   }
 
-  function addDeleteEvent(btn) {
+  function addDeleteEvent(todo) {
+    let btn = todo.querySelector(".close")
     btn.addEventListener("click", () => {
       console.log("deleted!")
       btn.parentNode.remove()
