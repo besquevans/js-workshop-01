@@ -1,13 +1,21 @@
 window.addEventListener("DOMContentLoaded", () => {
   let todoUl = document.querySelector("ul")
+  let todos = document.querySelectorAll("ul li")
   let addBtn = document.querySelector("#addBtn")
   let input = document.querySelector("#input")
 
+  //start
+  addCheckedEventForOld()
+  addDeleteEventForOld()
+  addDragEventForOld()
+  addDragenterEventForOld()
+  addCreateTodoEvent()
+
+
   //todo add checked
   function addCheckedEventForOld() {
-    let todos = document.querySelectorAll("ul li")
     todos.forEach(function(todo) {
-      addCheckedEvant(todo)
+      addCheckedEvent(todo)
     })
   }
 
@@ -19,12 +27,38 @@ window.addEventListener("DOMContentLoaded", () => {
     })
   }
 
+  function addDragEventForOld() {
+    todos.forEach(function(todo) {
+      todo.setAttribute("draggable", true)
+    })
+  }
+  function addDragEventForOld() {
+    todos.forEach(function(todo) {
+      todo.addEventListener("drag", () => {
+        
+      }
+    }
+  }
+
+  function addDragenterEventForOld() {
+    todos.forEach(function(todo){
+      todo.addEventListener("dragenter", () => {
+        console.log("dragenter")
+        target = event.target
+        console.log("target: " + target.id)
+        console.log("todo: " + todo.id)
+
+        todo.insertAdjacentElement("afterend", target)
+      })
+    })
+  }
+
   // add todo 
   function addCreateTodoEvent() {
-    addBtn.addEventListener("click", function() {
+    addBtn.addEventListener("click", () => {
       console.log("add todo")
       newTodo = createNewTodo()
-      addCheckedEvant(newTodo)
+      addCheckedEvent(newTodo)
       deleteBtn = newTodo.querySelector(".close")
       addDeleteEvent(deleteBtn)
       todoUl.appendChild(newTodo)
@@ -45,24 +79,17 @@ window.addEventListener("DOMContentLoaded", () => {
 
   //add events
 
-  function addCheckedEvant(todo) {
-    todo.addEventListener("click", function() {
+  function addCheckedEvent(todo) {
+    todo.addEventListener("click", () => {
       console.log("checked")
-      this.classList.toggle("checked")
+      todo.classList.toggle("checked")
     })
   }
 
   function addDeleteEvent(btn) {
-    btn.addEventListener("click", function() {
+    btn.addEventListener("click", () => {
       console.log("deleted!")
-      this.parentNode.remove()
+      btn.parentNode.remove()
     })
   }
-
-
-
-  //start
-  addCheckedEventForOld()
-  addDeleteEventForOld()
-  addCreateTodoEvent()
 })
