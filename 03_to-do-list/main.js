@@ -36,8 +36,8 @@ window.addEventListener("DOMContentLoaded", () => {
     todos.forEach(function(todo) {
       todo.addEventListener("drag", () => {
         
-      }
-    }
+      })
+    })
   }
 
   function addDragenterEventForOld() {
