@@ -13,34 +13,27 @@ window.addEventListener("DOMContentLoaded", () => {
     todos.forEach(function(todo) {
       addCheckedEvent(todo)
       addDeleteEvent(todo)
-      addDraggable(todo)
-      addDragstartEvent(todo)
-      addDropEvent(todo)
+      addDrag(todo)
     })
   }
 
 
   //Drag
-  function addDraggable(todo) {
+
+  function addDrag(todo) {
     todo.setAttribute("draggable", true)
-  }
+    todo.addEventListener("drag", function(e) {
+      // console.log("drag")
+      let target = e.target
+      let mouseElement = document.elementFromPoint(e.pageX, e.pageY)
 
-
-  function addDragstartEvent(todo) {
-    todo.addEventListener("dragstart", function(event) {
-      event.target.className = "target"
-      event.dataTransfer.setData("text/plain", event.target.className)
-    })
-  }
-
-  function addDropEvent(todo) {
-    todo.addEventListener("drag", function(event) {
-      let cName = event.dataTransfer.getData("text/plain")
-      console.log("drag")
-      console.log(cName)
-      // console.log("todo: " + todo.id)
-
-      // todo.insertAdjacentElement("afterend", target)
+      if(target != mouseElement && mouseElement.tagName == "LI"){
+        if(event.offsetY > 0) {
+          mouseElement.insertAdjacentElement("afterend", target)
+        } else {
+          mouseElement.insertAdjacentElement("beforebegin", target)
+        }
+      }
     })
   }
 
@@ -54,6 +47,7 @@ window.addEventListener("DOMContentLoaded", () => {
       addCheckedEvent(newTodo)
       deleteBtn = newTodo.querySelector(".close")
       addDeleteEvent(newTodo)
+      addDrag(newTodo)
       todoUl.appendChild(newTodo)
     })
   }
